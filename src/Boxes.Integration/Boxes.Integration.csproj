@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4D3CC463-A3C6-4569-BC00-A5C5D5A2DDD2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Boxes.Integration</RootNamespace>
+    <AssemblyName>Boxes.Integration</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Boxes.Integration.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Boxes.Integration.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Boxes.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Boxes.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ContainerSetup\TypeExtensions.cs" />
+    <Compile Include="Process\TopologicalProcessOrder.cs" />
+    <Compile Include="Process\TopologicalSortExtensions.cs" />
+    <Compile Include="Setup\BoxesIntergrationSetup.cs" />
+    <Compile Include="Setup\BoxesSetup.cs" />
+    <Compile Include="BoxesWrapperBase.cs" />
+    <Compile Include="Extensions\IBoxesExtension.cs" />
+    <Compile Include="Setup\IBoxesIntegrationSetup.cs" />
+    <Compile Include="IBoxesWrapper.cs" />
+    <Compile Include="ExtensionManifest.cs" />
+    <Compile Include="Setup\IPackageTypesFilter.cs" />
+    <Compile Include="Process\IProcessOrder.cs" />
+    <Compile Include="Tasks\ExtendBoxesTask.cs" />
+    <Compile Include="Tasks\BootupPackageTask.cs" />
+    <Compile Include="ProcessPackageContext.cs" />
+    <Compile Include="Tasks\PipelineExecutorWrapper.cs" />
+    <Compile Include="Tasks\RegisterTypesWithIocPackageTask.cs" />
+    <Compile Include="ContainerSetup\BoxesContainerSetupBase.cs" />
+    <Compile Include="ContainerSetup\IBoxesContainerSetup.cs" />
+    <Compile Include="Extensions\IPackageBootup.cs" />
+    <Compile Include="Extensions\IPackageSetup.cs" />
+    <Compile Include="IDependencyResolver.cs" />
+    <Compile Include="LoaderProxy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\RunOnceBoxesTask.cs" />
+    <Compile Include="ContainerSetup\RegisterWith.cs" />
+    <Compile Include="ContainerSetup\Registration.cs" />
+    <Compile Include="ContainerSetup\RegistrationMeta.cs" />
+    <Compile Include="Tasks\SetupPackageTask.cs" />
+    <Compile Include="Tasks\TypeScannerTask.cs" />
+    <Compile Include="Extensions\XmlManifest2012ExtensionReader.cs" />
+    <Compile Include="Process\TopologicalSort.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BoxesExtensionManifest.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
