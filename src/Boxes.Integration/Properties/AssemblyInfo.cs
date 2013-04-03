@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Boxes.Integration")]
-[assembly: AssemblyDescription("Provides an API for using Boxes with an IoC container")]
+[assembly: AssemblyDescription("Boxes.Integration utilises Boxes.Core to provide an API to integrate with an IoC container")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("dbones.co.uk")]
 [assembly: AssemblyProduct("Boxes.Intergration")]
