@@ -24,6 +24,8 @@
 		<file src="src\Boxes.Integration\bin\Release\Boxes.Integration.XML" target="lib\net40" />
 		<file src="src\Boxes.Integration\bin\Release\BoxesExtensionManifest.xsd" target="" />
 		<file src="nuspec\license.txt" target="" />
+		<file src="nuspec\changes.txt" target="" />
+		<file src="nuspec\ReadMe.txt" target="" />
 		<file src="nuspec\Apache License 2.0.txt" target="" />
     </files>
 </package>
