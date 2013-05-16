@@ -2,7 +2,7 @@ Thanks for downloading this Boxes.Core package.
 You can find full list of changes in changes.txt
 
 Documentation:		- http://docs.dbones.co.uk/boxes.MainPage.ashx
-Issue tracker: 		- https://github.com/boxes-project/Windsor/issues
+Issue tracker: 		- https://github.com/boxes-project/Integration/issues
 
 
 StackOverflow tags:	- boxes
