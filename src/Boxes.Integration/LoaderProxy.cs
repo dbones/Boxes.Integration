@@ -17,7 +17,7 @@ namespace Boxes.Integration
     using Loading;
 
     /// <summary>
-    /// Loader proxy allows a thrid party class to see which new packages have
+    /// Loader proxy allows a third party class to see which new packages have
     /// been loaded
     /// </summary>
     internal class LoaderProxy : ILoader

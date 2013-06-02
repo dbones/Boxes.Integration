@@ -73,7 +73,7 @@ namespace Boxes.Integration
         protected abstract void Initalise(TContainer container);
 
         /// <summary>
-        /// access to the container (builder in the case of Autofac?)
+        /// access to the container (kernel in the case of Ninject)
         /// </summary>
         protected virtual TContainer Container { get; private set; }
 

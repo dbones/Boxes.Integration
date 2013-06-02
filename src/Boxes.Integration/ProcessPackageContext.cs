@@ -53,30 +53,8 @@ namespace Boxes.Integration
         public override bool Equals(object obj)
         {
             var temp = obj as ProcessPackageContext;
-            if (obj == null) return false;
+            if (temp == null) return false;
             return GetHashCode() == temp.GetHashCode();
-        }
-    }
-
-
-    //TODO: look to remove
-    internal class ProcessPackageTypeContext
-    {
-        private readonly int _hash;
-        public ProcessPackageTypeContext(Package package, Type dependencyType)
-        {
-            Package = package;
-            DependencyType = dependencyType;
-
-            _hash = package.GetHashCode() + dependencyType.GetHashCode();
-        }
-
-        public Package Package { get; private set; }
-        public Type DependencyType { get; private set; }
-
-        public override int GetHashCode()
-        {
-            return _hash;
         }
     }
 }
