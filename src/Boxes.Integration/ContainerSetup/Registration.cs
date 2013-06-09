@@ -16,29 +16,33 @@ namespace Boxes.Integration.ContainerSetup
     using System;
     using System.Collections.Generic;
 
-    public class Registration
+    /// <summary>
+    /// This class provides a mechanism to setup the registration of types with the underlying IoC.
+    /// </summary>
+    [Obsolete("Use Register, this will be removed, very soon")]
+    public class Registration : IRegister
     {
-        public Registration ()
+        public Registration()
         {
             RegistrationMeta = new RegistrationMeta();
         }
 
-        internal RegistrationMeta RegistrationMeta { get; private set; }
+        public RegistrationMeta RegistrationMeta { get; private set; }
 
-        public Registration RegisterWith(RegisterWith with)
+        public Registration RegisterWith(Contracts with)
         {
             switch (with)
             {
-                case ContainerSetup.RegisterWith.AllInterfaces:
+                case Contracts.AllInterfaces:
                     RegistrationMeta.With = type => type.AllInterfaces();
                     break;
-                case ContainerSetup.RegisterWith.FirstInterface:
+                case Contracts.FirstInterface:
                     RegistrationMeta.With = type => new[] { (type.FirstInterface() ?? type) };
                     break;
-                case ContainerSetup.RegisterWith.SelfOnly:
+                case Contracts.SelfOnly:
                     RegistrationMeta.With = type => new[] { type };
                     break;
-                case ContainerSetup.RegisterWith.SelfAndAllInterfaces:
+                case Contracts.SelfAndAllInterfaces:
                     RegistrationMeta.With = type => type.SelfAndAllInterfaces();
                     break;
                 default:
@@ -73,15 +77,20 @@ namespace Boxes.Integration.ContainerSetup
 
         public Registration LifeStyle<TLifeStyle>()
         {
-            RegistrationMeta.LifeStyle = typeof (TLifeStyle);
+            LifeStyle(typeof (TLifeStyle));
+            return this;
+        }
+
+        public Registration LifeStyle(object lifeStyle)
+        {
+            RegistrationMeta.LifeStyle = lifeStyle;
             return this;
         }
 
         public Registration Configure<TConfiguration>(Action<TConfiguration> cfg)
         {
-            RegistrationMeta.Configuraitions.Add(o => cfg((TConfiguration)o));
+            RegistrationMeta.Configurations.Add(o => cfg((TConfiguration)o));
             return this;
         }
-
     }
 }

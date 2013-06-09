@@ -25,16 +25,17 @@ namespace Boxes.Integration.ContainerSetup
 
         public abstract void RegisterLifeStyle<TLifeStyle, TInterface>();
 
-        public void RegisterLifeStyle(Registration registration)
+        public void RegisterLifeStyle(IRegister registration)
         {
-            RegisterLifeStyle(registration.RegistrationMeta);
+            AddRegistration(registration);
         }
 
-        protected abstract void RegisterLifeStyle(RegistrationMeta registration);
-
-        protected void AddRegistrationTask(IBoxesTask<Type> registrationTask)
+        public void AddRegistration(IRegister registration)
         {
-            _registraionTasks.Add(registrationTask);
+            var task = CreateRegisterTask(registration.RegistrationMeta);
+            _registraionTasks.Add(task);
         }
+
+        protected abstract IBoxesTask<Type> CreateRegisterTask(RegistrationMeta registration);
     }
 }

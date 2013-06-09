@@ -16,9 +16,6 @@ namespace Boxes.Integration.Setup
     using Boxes.Tasks;
     using Process;
 
-    /// <summary>
-    /// 
-    /// </summary>
     public class BoxesIntergrationSetup : IBoxesIntegrationSetup
     {
         private readonly BoxesSetup _setup;

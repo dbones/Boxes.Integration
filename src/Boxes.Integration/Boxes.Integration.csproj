@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContainerSetup\IRegister.cs" />
+    <Compile Include="ContainerSetup\Register.cs" />
+    <Compile Include="ContainerSetup\RegisterContext.cs" />
     <Compile Include="ContainerSetup\TypeExtensions.cs" />
     <Compile Include="Process\TopologicalProcessOrder.cs" />
     <Compile Include="Process\TopologicalSortExtensions.cs" />
@@ -70,7 +73,7 @@
     <Compile Include="LoaderProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\RunOnceBoxesTask.cs" />
-    <Compile Include="ContainerSetup\RegisterWith.cs" />
+    <Compile Include="ContainerSetup\Contracts.cs" />
     <Compile Include="ContainerSetup\Registration.cs" />
     <Compile Include="ContainerSetup\RegistrationMeta.cs" />
     <Compile Include="Tasks\SetupPackageTask.cs" />

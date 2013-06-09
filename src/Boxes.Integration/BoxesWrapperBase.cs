@@ -31,10 +31,15 @@ namespace Boxes.Integration
         //issue is around the containers, a subset allow to deletions of registrations
         //an other way is to restart the app and only register the required packages with the IoC
         //the second way can be supported by coding a module
+        //favoured way, use of child container, will need to re-initialise the container (delete, create a new one)
 
         //TODO: migrations
         //updates of a module will require a restart, currently the Loaders do not support 
         //app domains. they do offer a level of isolation
+
+        //TODO: Multi-tenancy
+        //use child containers to handle tenants. implement a IProcess (consider PLinq) to register
+        //the correct packages with the correct child container.
 
         /// <summary>
         /// the main process line, add tasks to this, and they will be executed
@@ -122,6 +127,8 @@ namespace Boxes.Integration
 
             //process extensions first (in complete, before running the rest of the package or process)
             _setup.ExtensionRunner.Execute(loader.Packages).Force();
+
+            //TODO: push the following into a separate interface
 
             //filter out the packages which are not in use.
             IEnumerable<Package> filteredPackages =

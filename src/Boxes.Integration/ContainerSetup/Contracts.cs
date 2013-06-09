@@ -13,10 +13,12 @@
 // limitations under the License.
 namespace Boxes.Integration.ContainerSetup
 {
+    using System;
+
     /// <summary>
-    /// Register with which services
+    /// Register with which service contracts
     /// </summary>
-    public enum RegisterWith
+    public enum Contracts
     {
         /// <summary>
         /// All the interfaces
@@ -37,5 +39,11 @@ namespace Boxes.Integration.ContainerSetup
         /// With only the class itself
         /// </summary>
         SelfAndAllInterfaces
+    }
+
+    [Obsolete("Use Contracts", true)]
+    public enum RegisterWith
+    {
+        
     }
 }

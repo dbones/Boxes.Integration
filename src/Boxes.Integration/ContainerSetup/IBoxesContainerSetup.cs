@@ -32,13 +32,20 @@ namespace Boxes.Integration.ContainerSetup
         /// </summary>
         /// <typeparam name="TLifeStyle">The lifestyle manager to use</typeparam>
         /// <typeparam name="TInterface">The Dependency interface to register with the lifecycle</typeparam>
-        [Obsolete("use the other overload")]
+        [Obsolete("use AddRegistration", true)]
         void RegisterLifeStyle<TLifeStyle, TInterface>();
 
         /// <summary>
         /// Register a type (can be as simple as does it implement a Dependency or to apply a filter)
         /// </summary>
         /// <param name="registration">The registration with details on how setup the IoC with the types which match the where clause</param>
-        void RegisterLifeStyle(Registration registration);
+        [Obsolete("use AddRegistration")]
+        void RegisterLifeStyle(IRegister registration);
+        
+        /// <summary>
+        /// Register a type (can be as simple as does it implement a Dependency or to apply a filter)
+        /// </summary>
+        /// <param name="registration">The registration with details on how setup the IoC with the types which match the where clause</param>
+        void AddRegistration(IRegister registration);
     }
 }
