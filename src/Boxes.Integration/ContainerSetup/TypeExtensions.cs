@@ -17,13 +17,14 @@ namespace Boxes.Integration.ContainerSetup
     using System.Collections.Generic;
     using System.Linq;
 
-    /// <summary>
-    /// 
-    /// </summary>
     public static class TypeExtensions
     {
         private static IDictionary<Type, IEnumerable<Type>> _allInterfacesForType = new Dictionary<Type, IEnumerable<Type>>(); 
 
+        /// <summary>
+        /// Get all the interfaces this class implements
+        /// </summary>
+        /// <param name="type">the type of interest</param>
         public static IEnumerable<Type> AllInterfaces(this Type type)
         {
             if (type == null)
@@ -53,11 +54,19 @@ namespace Boxes.Integration.ContainerSetup
             return interfaces;
         }
 
+        /// <summary>
+        /// The first interface a type implements
+        /// </summary>
+        /// <param name="type">the type of interest</param>
         public static Type FirstInterface(this Type type)
         {
             return type.GetInterfaces().FirstOrDefault();
         }
 
+        /// <summary>
+        /// Gets all the interfaces this type implements, it also adds the type of interest to the result set
+        /// </summary>
+        /// <param name="type">the type of interest</param>
         public static IEnumerable<Type> SelfAndAllInterfaces(this Type type)
         {
             HashSet<Type> result = new HashSet<Type>(type.GetInterfaces());

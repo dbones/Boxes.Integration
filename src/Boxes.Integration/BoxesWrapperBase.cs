@@ -13,25 +13,22 @@
 // limitations under the License.
 namespace Boxes.Integration
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System;
+    using Boxes.Tasks;
     using ContainerSetup;
     using Discovering;
+    using InternalIoc;
     using Loading;
-    using Process;
-    using Setup;
     using Tasks;
 
-    /// <summary>
-    /// Wrapper around Boxes, and extends it with an IoC container 
-    /// </summary>
-    public abstract class BoxesWrapperBase<TContainer> : IBoxesWrapper
+    public abstract class BoxesWrapperBase<TBuilder, TContainer> : IBoxesWrapper<TBuilder>
     {
+
         //TODO: look at disabling registrations http://ayende.com/blog/2792/introducing-monorail-hotswap 
         //issue is around the containers, a subset allow to deletions of registrations
         //an other way is to restart the app and only register the required packages with the IoC
         //the second way can be supported by coding a module
-        //favoured way, use of child container, will need to re-initialise the container (delete, create a new one)
+        //favored way, use of child container, will need to re-initialise the container (delete, create a new one)
 
         //TODO: migrations
         //updates of a module will require a restart, currently the Loaders do not support 
@@ -41,139 +38,79 @@ namespace Boxes.Integration
         //use child containers to handle tenants. implement a IProcess (consider PLinq) to register
         //the correct packages with the correct child container.
 
-        /// <summary>
-        /// the main process line, add tasks to this, and they will be executed
-        /// in the order defined by <see cref="IProcessOrder"/>
-        /// </summary>
-        private readonly PipelineExecutorWrapper<ProcessPackageContext> _processPipeline = new PipelineExecutorWrapper<ProcessPackageContext>();
-        /// <summary>
-        /// this is the pre-process pipeline, however its not recommended to use this one.
-        /// </summary>
-        private readonly PipelineExecutorWrapper<ProcessPackageContext> _preProcessPipeline = new PipelineExecutorWrapper<ProcessPackageContext>();
+        private IPackageScanner _defaultPackageScanner;
+        private ILoader _loader;
+        private readonly TaskRunner<Package> _extensionRunner;
+        private readonly LoaderFactory _loaderFactory;
+        private readonly IInternalContainer _internalContainer;
 
-        private readonly BoxesSetup _setup;
-
-        protected BoxesWrapperBase(TContainer container)
+        protected BoxesWrapperBase()
         {
-            Container = container;
-            Initalise(container);
-            _setup = new BoxesSetup(this);
-            BoxesIntegrationSetup = new BoxesIntergrationSetup(_setup);
+            PackageRegistry = new PackageRegistry();
+            _extensionRunner = new TaskRunner<Package>(new ExtendBoxesTask(this));
+            _loaderFactory = new LoaderFactory();
+            _internalContainer = new InternalInternalContainer();
         }
 
-        public virtual PackageRegistry PackageRegistry { get { return DependencyResolver.Resolve<PackageRegistry>(); } }
-        public virtual IBoxesContainerSetup BoxesContainerSetup { get { return DependencyResolver.Resolve<IBoxesContainerSetup>(); } }
-        public virtual IBoxesIntegrationSetup BoxesIntegrationSetup { get; private set; }
+        public PackageRegistry PackageRegistry { get; private set; }
 
-        /// <summary>
-        /// Dev notes in the remarks
-        /// </summary>
-        /// <remarks>
-        /// Register with the IoC and Set the following properties 
-        ///     <see cref="DependencyResolver"/>, 
-        ///     <see cref="IBoxesWrapper.BoxesContainerSetup"/>, 
-        /// and <see cref="IBoxesWrapper.PackageRegistry"/>  
-        /// </remarks>
-        /// <param name="container">the container which was passed to the ctor</param>
-        protected abstract void Initalise(TContainer container);
+        public void Setup<TLoader>(IPackageScanner defaultPackageScanner) where TLoader : ILoader
+        {
+            _defaultPackageScanner = defaultPackageScanner;
+            _loader = _loaderFactory.CreateLoader<TLoader>(PackageRegistry);
+        }
 
-        /// <summary>
-        /// access to the container (kernel in the case of Ninject)
-        /// </summary>
-        protected virtual TContainer Container { get; private set; }
-
-        /// <summary>
-        /// The Dependency resolver
-        /// </summary>
-        public abstract IDependencyResolver DependencyResolver { get; }
-
-        /// <summary>
-        /// Sets up the <see cref="IPackageScanner"/> and <see cref="ILoader"/>
-        /// Dev notes in the remarks
-        /// </summary>
-        /// <remarks>
-        /// Register the <see cref="IPackageScanner"/> and <see cref="ILoader"/>
-        /// </remarks>
-        /// <typeparam name="TLoader"></typeparam>
-        /// <param name="defaultPackageScanner"></param>
-        public abstract void Setup<TLoader>(IPackageScanner defaultPackageScanner)
-            where TLoader : ILoader;
-
-        public virtual void DiscoverPackages(IPackageScanner packageScanner)
+        public void DiscoverPackages(IPackageScanner packageScanner)
         {
             PackageRegistry.DiscoverPackages(packageScanner);
         }
 
-        public virtual void DiscoverPackages()
+        public void DiscoverPackages()
         {
-            PackageRegistry.DiscoverPackages(DependencyResolver.Resolve<IPackageScanner>());
+            PackageRegistry.DiscoverPackages(_defaultPackageScanner);
         }
 
-        public virtual void LoadPackages()
+        public void LoadPackages()
         {
-            //TODO:review this method
-            //there are a number of phases
-            //1. Extensions
-            //2. Filter and organise packages
-            //3. IoC registrations
-            //4. PreProcess
-            //5. Process
-
-            //only process newly loaded packages
-            //each is a phase has to be isolated, as they may depend on
-            //one another
-            var loader = new LoaderProxy(DependencyResolver.Resolve<ILoader>());
+            var loader = new LoaderProxy(_loader);
             PackageRegistry.LoadPackages(loader);
 
-            //process extensions first (in complete, before running the rest of the package or process)
-            _setup.ExtensionRunner.Execute(loader.Packages).Force();
-
-            //TODO: push the following into a separate interface
-
-            //filter out the packages which are not in use.
-            IEnumerable<Package> filteredPackages =
-                _setup.GlobalPackagesFilter == null
-                    ? loader.Packages
-                    : _setup.GlobalPackagesFilter.FilterPackages(loader.Packages);
-
-            //get process Order
-            IEnumerable<Package> packages = _setup.ProcessOrder.Arrange(filteredPackages);
-
-            //find the types in each package
-            var processContexts =
-                packages.Select(
-                x =>
-                {
-                    IPackageTypesFilter typesFilter;
-                    if (!_setup.PackageTypesFilters.TryGetValue(x.Name, out typesFilter))
-                    {
-                        typesFilter = _setup.DefaultPackageTypesFilter;
-                    }
-
-                    var context = new ProcessPackageContext(x, typesFilter.FilterTypes(x));
-                    return context;
-                }).ToList(); //save the result, as we may need multiple iterations
-
-            //we need to register all the types with the underlying IoC first
-            _setup.IocTask.UpdateTasksAsRequired();
-            _setup.IocRunner.Execute(processContexts).Force();
-
-            //any pre-processing, hopefully there is none! as it is not recommended
-            if (_setup.PreProcesTasks.Count > 0)
-            {
-                _preProcessPipeline.UpdateTasksAsRequired(_setup.PreProcesTasks);
-                _preProcessPipeline.Execute(processContexts).Force();
-            }
-
-            //finally run the Setup and boot up of all the newly found packages 
-            //(tying to process them together, package by package)
-            if (_setup.ProcesTasks.Count > 0)
-            {
-                _processPipeline.UpdateTasksAsRequired(_setup.ProcesTasks);
-                _processPipeline.Execute(processContexts).Force();
-            }
+            //process extensions first (completely, before running the rest of the package or process)
+            _extensionRunner.Execute(loader.Packages).Force();
         }
 
-        public abstract void Dispose();
+        public T GetService<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public virtual void Dispose()
+        {
+            
+        }
+        
+    }
+
+
+    public class App
+    {
+        public void Main()
+        {
+            IBoxesWrapper boxes = null;
+            //boxes.BoxesIntegrationSetup
+            //how do we want to configure?
+
+            boxes.Setup<IsolatedLoader>(new PackageScanner("folder"));
+            boxes.DiscoverPackages();
+            boxes.LoadPackages();
+
+
+
+            boxes.EnablePackages("", "", "", "", ""); //auto detect the tenant
+            boxes.DependencyResolver.Resolve<Object>();
+        }
+
+
     }
 }

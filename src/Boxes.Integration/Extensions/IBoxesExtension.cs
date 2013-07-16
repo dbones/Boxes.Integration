@@ -15,14 +15,7 @@ namespace Boxes.Integration.Extensions
 {
     /// <summary>
     /// Extend <see cref="Boxes.Integration"/>,
-    /// this runs before any other package is registered with the IoC, to allow room for extensions
+    /// this runs before any other package is registered with the applications IoC, to allow room for extensions
     /// </summary>
-    public interface IBoxesExtension
-    {
-        /// <summary>
-        /// extend the boxes through the boxes wrapper.
-        /// </summary>
-        /// <param name="boxesWrapper">the wrapper will give access to Boxes, IoC registrations and the Dependency Resolver</param>
-        void Extend(IBoxesWrapper boxesWrapper);
-    }
+    public interface IBoxesExtension{ }
 }

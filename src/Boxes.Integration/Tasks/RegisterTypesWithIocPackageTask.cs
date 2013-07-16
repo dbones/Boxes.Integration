@@ -18,28 +18,28 @@ namespace Boxes.Integration.Tasks
     using Boxes.Tasks;
     using ContainerSetup;
 
-    internal class RegisterTypesWithIocPackageTask : IBoxesTask<ProcessPackageContext>
+    internal class RegisterTypesWithIocPackageTask<TBuilder> : IBoxesTask<ProcessPackageContext>
     {
-        private readonly IBoxesContainerSetup _boxesContainerSetup;
-        private PipilineExecutor<Type> _pipilineExecutor;
+        private readonly IContainerSetup<> _containerSetup;
+        private PipilineExecutor<RegistrationContext<TBuilder>> _pipilineExecutor;
 
         private int _numberOfRegistrations =-1;
 
-        public RegisterTypesWithIocPackageTask(IBoxesContainerSetup boxesContainerSetup)
+        public RegisterTypesWithIocPackageTask(IContainerSetup<> containerSetup)
         {
-            _boxesContainerSetup = boxesContainerSetup;
+            _containerSetup = containerSetup;
         }
 
         public void UpdateTasksAsRequired()
         {
-            var currentNumberOfRegistrations = _boxesContainerSetup.Registrations.Count();
+            var currentNumberOfRegistrations = _containerSetup.Registrations.Count();
             
             if (currentNumberOfRegistrations == _numberOfRegistrations)
             {
                 return;
             }
             _numberOfRegistrations = currentNumberOfRegistrations; 
-            _pipilineExecutor = _boxesContainerSetup.Registrations.CreatePipeline();
+            _pipilineExecutor = _containerSetup.Registrations.CreatePipeline();
         }
 
         public bool CanHandle(ProcessPackageContext item)

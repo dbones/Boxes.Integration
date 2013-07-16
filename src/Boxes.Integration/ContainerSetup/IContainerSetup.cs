@@ -13,39 +13,48 @@
 // limitations under the License.
 namespace Boxes.Integration.ContainerSetup
 {
-    using System;
     using System.Collections.Generic;
     using Boxes.Tasks;
 
     /// <summary>
-    /// setup how LifeStyles will be managed 
+    /// setup how LifeStyles will be managed
     /// </summary>
-    public interface IBoxesContainerSetup
+    public interface IContainerSetup<TBuilder>
     {
         /// <summary>
         /// all the registration to run the types through
         /// </summary>
-        IEnumerable<IBoxesTask<Type>> Registrations { get; }
+        IEnumerable<IBoxesTask<RegistrationContext<TBuilder>>> Registrations { get; }
 
         /// <summary>
-        /// Simple Dependency association with a LifeStyle manager of the IoC container
+        /// the default filter to find exported classes with
         /// </summary>
-        /// <typeparam name="TLifeStyle">The lifestyle manager to use</typeparam>
-        /// <typeparam name="TInterface">The Dependency interface to register with the lifecycle</typeparam>
-        [Obsolete("use AddRegistration", true)]
-        void RegisterLifeStyle<TLifeStyle, TInterface>();
+        ITypeRegistrationFilter DefaultTypeRegistrationFilter { get; }
 
-        /// <summary>
-        /// Register a type (can be as simple as does it implement a Dependency or to apply a filter)
-        /// </summary>
-        /// <param name="registration">The registration with details on how setup the IoC with the types which match the where clause</param>
-        [Obsolete("use AddRegistration")]
-        void RegisterLifeStyle(IRegister registration);
-        
         /// <summary>
         /// Register a type (can be as simple as does it implement a Dependency or to apply a filter)
         /// </summary>
         /// <param name="registration">The registration with details on how setup the IoC with the types which match the where clause</param>
         void AddRegistration(IRegister registration);
+
+        /// <summary>
+        /// override the default package filter
+        /// </summary>
+        /// <param name="typeTypesFilter">the filter</param>
+        void SetDefaultFilter(ITypeRegistrationFilter typeTypesFilter);
+
+        /// <summary>
+        /// set a filter for a particular package, some packages may require their own filters
+        /// </summary>
+        /// <param name="typesFilterTypes">the filter</param>
+        /// <param name="packgeName">packages which </param>
+        void AddPackgeLevelFilter(ITypeRegistrationFilter typesFilterTypes, params string[] packgeName);
+
+        /// <summary>
+        /// get the filter for a given package
+        /// </summary>
+        /// <param name="packageName">name of the package</param>
+        /// <returns>null if there is not filter</returns>
+        ITypeRegistrationFilter GetTypeRegistrationFilter(string packageName);
     }
 }

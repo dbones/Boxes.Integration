@@ -14,17 +14,18 @@
 namespace Boxes.Integration.Process
 {
     using System.Collections.Generic;
+    using Extensions;
 
     /// <summary>
     /// Set the order to process the packages 
     /// </summary>
-    public interface IProcessOrder
+    public interface IProcessOrder : IBoxesExtension
     {
         /// <summary>
         /// arranges the packages ready to be processed
         /// </summary>
-        /// <param name="packages">the lastest, unprocess packages</param>
-        /// <returns>the packags in order, ready to be processed</returns>
+        /// <param name="packages">the latest, unprocessed packages</param>
+        /// <returns>the packages in order, ready to be processed</returns>
         IEnumerable<Package> Arrange(IEnumerable<Package> packages);
     }
 }

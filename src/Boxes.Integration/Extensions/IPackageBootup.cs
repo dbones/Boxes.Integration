@@ -13,6 +13,7 @@
 // limitations under the License.
 namespace Boxes.Integration.Extensions
 {
+    using ApplicationContext.Tenancy;
     using Tasks;
 
     /// <summary>
@@ -21,9 +22,9 @@ namespace Boxes.Integration.Extensions
     public interface IPackageBootup
     {
         /// <summary>
-        /// initialise the package
+        /// initialize the package
         /// </summary>
         /// <param name="dependencyResolver"></param>
-        void Load(IDependencyResolver dependencyResolver);
+        void Load(Tenant tenant, IDependencyResolver dependencyResolver);
     }
 }
