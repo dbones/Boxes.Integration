@@ -1,6 +1,6 @@
 namespace Boxes.Integration.Trust
 {
-    using Context;
+    using Contexts;
     using Filters;
 
     /// <summary>
@@ -13,12 +13,14 @@ namespace Boxes.Integration.Trust
     /// </remarks>
     public interface ITrustManager
     {
+        //TODO: should the IsTrusted Method throw an exception instead?
+
         /// <summary>
         /// this will detail if a class/dll etc is trusted
         /// </summary>
         /// <param name="context">the current context to investigate</param>
         /// <returns>return true if the context can be trusted</returns>
-        bool IsTrusted(TrustContext context);
+        void IsTrusted(TrustContext context);
 
         /// <summary>
         /// add a trust filter for the manager to use

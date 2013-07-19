@@ -45,28 +45,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationContext\Global\GlobalApplication.cs" />
+    <Compile Include="Contexts\ExecutionContext.cs" />
+    <Compile Include="Contexts\Application\Application.cs" />
+    <Compile Include="Contexts\Application\IApplicationLoadProcess.cs" />
+    <Compile Include="Contexts\ILoadProcess.cs" />
     <Compile Include="InternalIoc\IInternalContainer.cs" />
     <Compile Include="InternalIoc\Registration.cs" />
     <Compile Include="InternalContainerExtensions.cs" />
     <Compile Include="InternalIoc\InternalInternalContainer.cs" />
-    <Compile Include="ApplicationContext\Tenancy\ITenantLoadProcess.cs" />
-    <Compile Include="ContainerSetup\DefaultTypeRegistrationFilter.cs" />
-    <Compile Include="ContainerSetup\IGlobalContainerSetup.cs" />
-    <Compile Include="ContainerSetup\ITenantContainerSetup.cs" />
-    <Compile Include="ApplicationContext\Tenancy\TenantLoadProcess.cs" />
+    <Compile Include="Contexts\Tenancy\ITenantLoadProcess.cs" />
+    <Compile Include="Setup\Filters\DefaultTypeRegistrationFilter.cs" />
+    <Compile Include="Setup\IApplicationContainerSetup.cs" />
+    <Compile Include="Setup\IRegistrationTaskMapper.cs" />
+    <Compile Include="Setup\ITenantContainerSetup.cs" />
+    <Compile Include="Contexts\Tenancy\TenantLoadProcess.cs" />
+    <Compile Include="Exceptions\ServiceTypeDoesNotMatchInstanceException.cs" />
+    <Compile Include="Extensions\IApplicationContainerSetup.cs" />
+    <Compile Include="Extensions\ITenantContainerSetup.cs" />
+    <Compile Include="Exceptions\FailedTrustException.cs" />
     <Compile Include="TypeExtensions.cs" />
-    <Compile Include="ApplicationContext\Tenancy\ITenantManager.cs" />
-    <Compile Include="ContainerSetup\IRegister.cs" />
-    <Compile Include="ContainerSetup\RegisterBase.cs" />
-    <Compile Include="ContainerSetup\RegisterContext.cs" />
-    <Compile Include="ContainerSetup\RegistrationContext.cs" />
-    <Compile Include="ContainerSetup\TypeExtensions.cs" />
+    <Compile Include="Contexts\Tenancy\ITenantManager.cs" />
+    <Compile Include="Setup\Registrations\IRegister.cs" />
+    <Compile Include="Setup\Registrations\RegisterBase.cs" />
+    <Compile Include="Setup\Registrations\RegisterContext.cs" />
+    <Compile Include="Setup\RegistrationContext.cs" />
     <Compile Include="Exceptions\CreateLoaderException.cs" />
     <Compile Include="Factories\FuncCreateLoader.cs" />
     <Compile Include="Factories\ICreateLoader.cs" />
     <Compile Include="Factories\IDependencyResolverFactory.cs" />
-    <Compile Include="ApplicationContext\IExecutionContext.cs" />
+    <Compile Include="Contexts\IExecutionContext.cs" />
     <Compile Include="Factories\IIoCFactory.cs" />
     <Compile Include="Factories\LoaderFactory.cs" />
     <Compile Include="ObjectExtensions.cs" />
@@ -76,38 +83,37 @@
     <Compile Include="Extensions\IBoxesExtension.cs" />
     <Compile Include="IBoxesWrapper.cs" />
     <Compile Include="ExtensionManifest.cs" />
-    <Compile Include="ContainerSetup\ITypeRegistrationFilter.cs" />
+    <Compile Include="Setup\Filters\ITypeRegistrationFilter.cs" />
     <Compile Include="Process\IProcessOrder.cs" />
     <Compile Include="Tasks\ExtendBoxesTask.cs" />
     <Compile Include="Tasks\BootupPackageTask.cs" />
     <Compile Include="ProcessPackageContext.cs" />
     <Compile Include="Tasks\PipelineExecutorWrapper.cs" />
     <Compile Include="Tasks\RegisterTypesWithIocPackageTask.cs" />
-    <Compile Include="ContainerSetup\ContainerSetupBase.cs" />
-    <Compile Include="ContainerSetup\IContainerSetup.cs" />
+    <Compile Include="Setup\ContainerSetupBase.cs" />
+    <Compile Include="Setup\IContainerSetup.cs" />
     <Compile Include="Extensions\IPackageBootup.cs" />
     <Compile Include="Extensions\IPackageSetup.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="LoaderProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\RunOnceBoxesTask.cs" />
-    <Compile Include="ContainerSetup\Contracts.cs" />
-    <Compile Include="ContainerSetup\Registration.cs" />
-    <Compile Include="ContainerSetup\RegistrationMeta.cs" />
+    <Compile Include="Setup\Registrations\Contracts.cs" />
+    <Compile Include="Setup\Registrations\Registration.cs" />
+    <Compile Include="Setup\RegistrationMeta.cs" />
     <Compile Include="Tasks\SetupPackageTask.cs" />
     <Compile Include="Tasks\TypeScannerTask.cs" />
     <Compile Include="Extensions\XmlManifest2012ExtensionReader.cs" />
     <Compile Include="Process\TopologicalSort.cs" />
-    <Compile Include="ApplicationContext\Tenancy\Tenant.cs" />
-    <Compile Include="Exceptions\TenantAlreadyRegisteredWithThatNameException.cs" />
+    <Compile Include="Contexts\Tenancy\Tenant.cs" />
     <Compile Include="Trust\Filters\FuncPackageTypeContractFilter.cs" />
     <Compile Include="Trust\Filters\PackageTypeContractFilter.cs" />
     <Compile Include="Trust\Filters\TypeContractFilter.cs" />
-    <Compile Include="Trust\Context\TypeContractTrustContext.cs" />
+    <Compile Include="Trust\Contexts\TypeContractTrustContext.cs" />
     <Compile Include="Trust\Filters\ITrustFilter.cs" />
     <Compile Include="Trust\ITrustManager.cs" />
-    <Compile Include="Trust\Context\PackageTrustContext.cs" />
-    <Compile Include="Trust\Context\TrustContext.cs" />
+    <Compile Include="Trust\Contexts\PackageTrustContext.cs" />
+    <Compile Include="Trust\Contexts\TrustContext.cs" />
     <Compile Include="Trust\Filters\TrustFilterBase.cs" />
     <Compile Include="Trust\TrustManager.cs" />
   </ItemGroup>
@@ -117,9 +123,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Setup\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

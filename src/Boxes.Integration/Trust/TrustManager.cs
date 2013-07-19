@@ -3,6 +3,8 @@ namespace Boxes.Integration.Trust
     using System.Collections.Generic;
     using System.Linq;
     using Context;
+    using Contexts;
+    using Exceptions;
     using Filters;
 
     /// <summary>
@@ -17,13 +19,16 @@ namespace Boxes.Integration.Trust
     {
         readonly IList<ITrustFilter> _trustFilters = new List<ITrustFilter>();
 
-        public bool IsTrusted(TrustContext context)
+        public void IsTrusted(TrustContext context)
         {
             bool failedTrust = _trustFilters
                 .Where(trustFilter => trustFilter.CanHandle(context))
                 .Any(trustFilter => !trustFilter.IsTrusted(context));
             
-            return !failedTrust;
+            if(failedTrust)
+            {
+                throw new FailedTrustException(context);
+            }
         }
 
         public void AddTrust(ITrustFilter trust)

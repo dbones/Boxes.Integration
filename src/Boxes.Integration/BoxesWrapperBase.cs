@@ -15,8 +15,8 @@ namespace Boxes.Integration
 {
     using System;
     using Boxes.Tasks;
-    using ContainerSetup;
     using Discovering;
+    using Factories;
     using InternalIoc;
     using Loading;
     using Tasks;
@@ -46,10 +46,11 @@ namespace Boxes.Integration
 
         protected BoxesWrapperBase()
         {
-            PackageRegistry = new PackageRegistry();
-            _extensionRunner = new TaskRunner<Package>(new ExtendBoxesTask(this));
-            _loaderFactory = new LoaderFactory();
             _internalContainer = new InternalInternalContainer();
+            PackageRegistry = new PackageRegistry();
+            _extensionRunner = new TaskRunner<Package>(new ExtendBoxesTask(_internalContainer));
+            _loaderFactory = new LoaderFactory();
+            
         }
 
         public PackageRegistry PackageRegistry { get; private set; }
@@ -81,13 +82,15 @@ namespace Boxes.Integration
 
         public T GetService<T>()
         {
-            throw new NotImplementedException();
+            return _internalContainer.Resolve<T>();
         }
+
+
 
 
         public virtual void Dispose()
         {
-            
+            _internalContainer.Dispose();
         }
         
     }

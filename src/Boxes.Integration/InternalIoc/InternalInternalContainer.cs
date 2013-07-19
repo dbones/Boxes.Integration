@@ -3,8 +3,7 @@ namespace Boxes.Integration.InternalIoc
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Trust;
-    using Trust.Filters;
+    using Exceptions;
 
     /// <summary>
     /// this container is a simple internalContainer which handles all contracts as singletons, (very limited functionality)
@@ -14,52 +13,39 @@ namespace Boxes.Integration.InternalIoc
         private readonly IDictionary<Type, Registration> _registrations = new Dictionary<Type, Registration>();
         private readonly IDictionary<Type, object> _instances = new Dictionary<Type, object>();
         private readonly object _lock = new object();
-        private readonly ITrustManager _trustManager = new TrustManager();
-
-        public InternalInternalContainer()
-        {
-            //_trustManager.AddTrust(new TypeContractFilter<ITrustManager, TrustManager>());
-            //Add(typeof(ITrustManager), typeof(TrustManager), false, true);
-            //_instances.Add(typeof(ITrustManager), _trustManager); //set the default instance
-        }
-
-
+        
         public void Add(Type contract, Type service)
         {
-            Add(contract, service, true);
-        }
-
-        public void Add(Type contract, Type service, bool isAllowedToBeOverridden)
-        {
-            Add(contract, service, isAllowedToBeOverridden, false);
-        }
-
-        internal void Add(Type contract, Type service, bool isAllowedToBeOverridden, bool isDefault)
-        {
-            //TrustContext context = new TrustContext(contract, service,);
-            //if (!_trustManager.IsTrusted(context))
-            //{
-            //    throw new Exception("not trusted");
-            //}
-
             lock (_lock)
             {
                 Registration registration;
                 if (_registrations.TryGetValue(contract, out registration))
                 {
-                    if (!isAllowedToBeOverridden)
-                    {
-                        throw new Exception("Cannot override serivce");
-                    }
+                    //at this point the source is trusted, so it can override a service if required
                     registration.Service = service;
                 }
                 else
                 {
                     registration = new Registration(contract, service);
-                    registration.IsAllowedToBeOverridden = isAllowedToBeOverridden;
-                    registration.IsDefault = isDefault;
                     _registrations.Add(contract, registration);
                 }
+            }
+        }
+
+        public void setInstance(Type service, object instance)
+        {
+            if (service != instance.GetType())
+            {
+                throw new ServiceTypeDoesNotMatchInstanceException(service, instance);
+            }
+
+            if (_instances.ContainsKey(service))
+            {
+                _instances[service] = instance;
+            }
+            else
+            {
+                _instances.Add(service, instance);
             }
         }
 

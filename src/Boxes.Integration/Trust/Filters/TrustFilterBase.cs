@@ -1,6 +1,6 @@
 namespace Boxes.Integration.Trust.Filters
 {
-    using Context;
+    using Contexts;
 
     /// <summary>
     /// A base trust filter, this adds a basic handle to match the <see cref="TrustContext"/>

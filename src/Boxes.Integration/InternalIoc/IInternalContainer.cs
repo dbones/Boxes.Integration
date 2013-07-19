@@ -8,9 +8,7 @@ namespace Boxes.Integration.InternalIoc
     internal interface IInternalContainer : IDisposable
     {
         void Add(Type contract, Type service);
-        void Add(Type contract, Type service, bool isAllowedToBeOverridden);
-        void Add(Type contract, Type service, bool isAllowedToBeOverridden, bool isDefault);
-
+        
         void setInstance(Type type, object instance);
 
         object Resolve(Type contract);

@@ -13,7 +13,7 @@
 // limitations under the License.
 namespace Boxes.Integration.Extensions
 {
-    using ApplicationContext.Tenancy;
+    using Contexts.Tenancy;
     using Tasks;
 
     /// <summary>

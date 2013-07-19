@@ -1,6 +1,6 @@
 namespace Boxes.Integration.Trust.Filters
 {
-    using Context;
+    using Contexts;
 
     /// <summary>
     /// filters directly on the type of the contract and service which will be registered directly with the internal container

@@ -11,20 +11,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace Boxes.Integration.Extensions
+namespace Boxes.Integration.Setup.Registrations
 {
-    using Contexts.Tenancy;
-    using Tasks;
-
     /// <summary>
-    /// this will load any logic to set the package in a state which it is ready to run. To use you must register <see cref="BootupPackageTask"/>
+    /// Register with which service contracts
     /// </summary>
-    public interface IPackageBootup
+    public enum Contracts
     {
         /// <summary>
-        /// initialize the package
+        /// All the interfaces
         /// </summary>
-        /// <param name="dependencyResolver"></param>
-        void Load(Tenant tenant, IDependencyResolver dependencyResolver);
+        AllInterfaces,
+
+        /// <summary>
+        /// Only the first interface
+        /// </summary>
+        FirstInterface,
+
+        /// <summary>
+        /// With only the class itself
+        /// </summary>
+        SelfOnly,
+
+        /// <summary>
+        /// With only the class itself
+        /// </summary>
+        SelfAndAllInterfaces
     }
 }

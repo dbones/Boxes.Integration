@@ -1,10 +1,9 @@
-namespace Boxes.Integration
+namespace Boxes.Integration.Factories
 {
     using System;
     using System.Collections.Generic;
+    using Boxes.Loading;
     using Exceptions;
-    using Factories;
-    using Loading;
 
     /// <summary>
     /// Provides the way to create a <see cref="ILoader"/>, you can register custom loaders here too

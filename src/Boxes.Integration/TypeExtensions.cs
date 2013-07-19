@@ -1,6 +1,8 @@
 namespace Boxes.Integration
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// some type extensions
@@ -16,5 +18,83 @@ namespace Boxes.Integration
         {
             return typeof(TService) == type;
         }
+
+
+        private static readonly IDictionary<Type, IEnumerable<Type>> _allInterfacesForType = new Dictionary<Type, IEnumerable<Type>>();
+
+        /// <summary>
+        /// Get all the interfaces this class implements
+        /// </summary>
+        /// <param name="type">the type of interest</param>
+        public static IEnumerable<Type> AllInterfaces(this Type type)
+        {
+            if (type == null)
+            {
+                return new Type[0];
+            }
+
+            IEnumerable<Type> cached;
+            if (_allInterfacesForType.TryGetValue(type, out cached))
+            {
+                return cached;
+            }
+
+            HashSet<Type> interfaces = new HashSet<Type>();
+            if (type.IsInterface)
+            {
+                interfaces.Add(type);
+            }
+
+            var types = type.GetInterfaces();
+            for (int i = 0; i < types.Length; i++)
+            {
+                var iface = types[i];
+                interfaces.AddRange(iface.AllInterfaces());
+            }
+            _allInterfacesForType.Add(type, interfaces);
+            return interfaces;
+        }
+
+        /// <summary>
+        /// The first interface a type implements
+        /// </summary>
+        /// <param name="type">the type of interest</param>
+        public static Type FirstInterface(this Type type)
+        {
+            return type.GetInterfaces().FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets all the interfaces this type implements, it also adds the type of interest to the result set
+        /// </summary>
+        /// <param name="type">the type of interest</param>
+        public static IEnumerable<Type> SelfAndAllInterfaces(this Type type)
+        {
+            HashSet<Type> result = new HashSet<Type>(type.GetInterfaces());
+            if (!type.IsInterface && type.IsClass)
+            {
+                result.Add(type);
+            }
+            return result;
+        }
     }
+
+    /// <summary>
+    /// couple of string extensions
+    /// </summary>
+    public static class StringExtension
+    {
+
+        /// <summary>
+        /// format the string, "{0} world".FormatWith("Hello");
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static string FormatWith(this string str, params object[] args)
+        {
+            return string.Format(str, args);
+        }
+    }
+
 }

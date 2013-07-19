@@ -11,20 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-namespace Boxes.Integration.Extensions
+namespace Boxes.Integration.Setup.Registrations
 {
-    using Contexts.Tenancy;
-    using Tasks;
+    using System;
 
     /// <summary>
-    /// this will load any logic to set the package in a state which it is ready to run. To use you must register <see cref="BootupPackageTask"/>
+    /// a register context holds all the information required for someone to have complete control
+    /// over a single types registration.
     /// </summary>
-    public interface IPackageBootup
+    /// <typeparam name="TConfiguration">the underlying IoC registration type</typeparam>
+    public class RegisterContext<TConfiguration>
     {
         /// <summary>
-        /// initialize the package
+        /// the configuration of the underlying IoC registration
         /// </summary>
-        /// <param name="dependencyResolver"></param>
-        void Load(Tenant tenant, IDependencyResolver dependencyResolver);
+        public TConfiguration Configuration { get; set; }
+
+        /// <summary>
+        /// the type the configuration is for
+        /// </summary>
+        public Type Type { get; set; }
     }
 }

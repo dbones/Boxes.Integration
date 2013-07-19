@@ -14,10 +14,11 @@
 namespace Boxes.Integration
 {
     using System;
-    using ApplicationContext;
-    using ContainerSetup;
+    using Context;
+    using Contexts;
     using Discovering;
     using Loading;
+    using Setup;
     using Trust;
 
     /// <summary>
@@ -59,8 +60,6 @@ namespace Boxes.Integration
         /// <typeparam name="T">The service to return</typeparam>
         /// <returns>null if it it does not exist</returns>
         T GetService<T>();
-
-
     }
 
     /// <summary>
@@ -79,9 +78,9 @@ namespace Boxes.Integration
         /// <summary>
         /// A mechanism to handle type registration with the underlying Global/Parent IoC container.
         /// </summary>
-        public static IGlobalContainerSetup<TBuilder> GlobalRegistrations<TBuilder>(this IBoxesWrapper<TBuilder> boxes)
+        public static IApplicationContainerSetup<TBuilder> GlobalRegistrations<TBuilder>(this IBoxesWrapper<TBuilder> boxes)
         {
-            return boxes.GetService<IGlobalContainerSetup<TBuilder>>();
+            return boxes.GetService<IApplicationContainerSetup<TBuilder>>();
         }
 
         /// <summary>
@@ -99,7 +98,5 @@ namespace Boxes.Integration
         {
             return boxes.GetService<ITrustManager>();
         }
-
     }
-
 }

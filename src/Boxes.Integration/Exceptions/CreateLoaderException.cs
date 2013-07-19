@@ -20,15 +20,7 @@ namespace Boxes.Integration.Exceptions
 
         public override string Message
         {
-            get
-            {
-                return ToString();
-            }
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0} - has no ICreateLoader registered ", LoaderType);
+            get { return "{0} - has no ICreateLoader registered ".FormatWith(LoaderType); }
         }
     }
 }

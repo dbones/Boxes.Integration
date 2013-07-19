@@ -17,14 +17,20 @@ namespace Boxes.Integration.Tasks
     using System.Linq;
     using Boxes.Tasks;
     using Extensions;
+    using InternalIoc;
+    using Setup;
+    using Trust;
+    using Trust.Contexts;
 
-    internal class ExtendBoxesTask : IBoxesTask<Package>
+    internal class ExtendBoxesTask<TBuilder> : IBoxesTask<Package>
     {
-        private readonly IBoxesWrapper _boxesWrapper;
+        private readonly IInternalContainer _container;
+        private readonly ITrustManager _trustManager;
 
-        public ExtendBoxesTask(IBoxesWrapper boxesWrapper)
+        public ExtendBoxesTask(IInternalContainer container)
         {
-            _boxesWrapper = boxesWrapper;
+            _container = container;
+            _trustManager = container.Resolve<ITrustManager>();
         }
 
         public bool CanHandle(Package item)
@@ -34,6 +40,8 @@ namespace Boxes.Integration.Tasks
 
         public void Execute(Package item)
         {
+            //TODO:clean up
+
             var manifest = (ExtensionManifest)item.Manifest;
             var assemblies = manifest
                 .Extensions
@@ -47,12 +55,29 @@ namespace Boxes.Integration.Tasks
                             return x.Assembly;
                         });
 
-            var types = assemblies.SelectMany(x => x.GetExportedTypes()).Where(x=> typeof(IBoxesExtension).IsAssignableFrom(x));
+            var types = assemblies.SelectMany(x => x.GetExportedTypes()).ToArray();
 
-            foreach(var type in types)
+            foreach (var service in types.Where(x => typeof(IBoxesExtension).IsAssignableFrom(x)))
             {
-                var extension = (IBoxesExtension)Activator.CreateInstance(type);
-                extension.Extend(_boxesWrapper);
+                var contract = service.FirstInterface();
+                _trustManager.IsTrusted(new PackageTrustContext(contract, service, item));
+                _container.Add(contract, service);
+            }
+            
+            //TODO: make this an extendable area.
+
+            var globalSetup = _container.Resolve<IApplicationContainerSetup<TBuilder>>();
+            foreach (var setup in types.Where(x => typeof(IApplicationContainerSetup).IsAssignableFrom(x)))
+            {
+                var globalSetupInstance = (IApplicationContainerSetup)Activator.CreateInstance(setup);
+                globalSetupInstance.Setup(globalSetup);
+            }
+
+            var tenantSetup = _container.Resolve<ITenantContainerSetup<TBuilder>>();
+            foreach (var setup in types.Where(x => typeof(ITenantContainerSetup).IsAssignableFrom(x)))
+            {
+                var tenantSetupInstance = (ITenantContainerSetup) Activator.CreateInstance(setup);
+                tenantSetupInstance.Setup(tenantSetup);
             }
         }
     }

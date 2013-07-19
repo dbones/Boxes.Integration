@@ -16,16 +16,16 @@ namespace Boxes.Integration.Tasks
     using System;
     using System.Linq;
     using Boxes.Tasks;
-    using ContainerSetup;
+    using Setup;
 
     internal class RegisterTypesWithIocPackageTask<TBuilder> : IBoxesTask<ProcessPackageContext>
     {
-        private readonly IContainerSetup<> _containerSetup;
+        private readonly IContainerSetup<TBuilder> _containerSetup;
         private PipilineExecutor<RegistrationContext<TBuilder>> _pipilineExecutor;
 
         private int _numberOfRegistrations =-1;
 
-        public RegisterTypesWithIocPackageTask(IContainerSetup<> containerSetup)
+        public RegisterTypesWithIocPackageTask(IContainerSetup<TBuilder> containerSetup)
         {
             _containerSetup = containerSetup;
         }
