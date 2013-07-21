@@ -17,5 +17,5 @@ namespace Boxes.Integration.Extensions
     /// Extend <see cref="Boxes.Integration"/>,
     /// this runs before any other package is registered with the applications IoC, to allow room for extensions
     /// </summary>
-    public interface IBoxesExtension{ }
+    public interface IBoxesExtension { }
 }

@@ -30,8 +30,6 @@ namespace Boxes.Integration.Extensions
         /// <summary>
         /// sets up the module ready to be loaded, <see cref="IPackageBootup"/>
         /// </summary>
-        /// <param name="tenant">the tenant which we are setting up the package for</param>
-        /// <param name="dependencyResolver">the main container, allow you access to any registered objects</param>
-        void Setup(Tenant tenant, IDependencyResolver dependencyResolver);
+        void Setup();
     }
 }

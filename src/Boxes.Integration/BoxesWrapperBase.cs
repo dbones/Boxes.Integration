@@ -100,20 +100,21 @@ namespace Boxes.Integration
     {
         public void Main()
         {
-            IBoxesWrapper boxes = null;
-            //boxes.BoxesIntegrationSetup
-            //how do we want to configure?
+            //IBoxesWrapper<> boxes = null;
+            ////boxes.BoxesIntegrationSetup
+            ////how do we want to configure?
 
-            boxes.Setup<IsolatedLoader>(new PackageScanner("folder"));
-            boxes.DiscoverPackages();
-            boxes.LoadPackages();
+            //boxes.Setup<IsolatedLoader>(new PackageScanner("folder"));
+            //boxes.DiscoverPackages();
+            //boxes.LoadPackages();
 
 
 
-            boxes.EnablePackages("", "", "", "", ""); //auto detect the tenant
-            boxes.DependencyResolver.Resolve<Object>();
+            //boxes.EnablePackages("", "", "", "", ""); //auto detect the tenant
+            //boxes.DependencyResolver.Resolve<Object>();
         }
 
 
     }
+
 }

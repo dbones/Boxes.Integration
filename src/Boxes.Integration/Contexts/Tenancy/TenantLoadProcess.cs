@@ -7,6 +7,7 @@ namespace Boxes.Integration.Contexts.Tenancy
     using Boxes.Integration.Factories;
     using Boxes.Integration.Setup;
     using Setup.Filters;
+    using Trust;
 
     /// <summary>
     /// 
@@ -19,6 +20,7 @@ namespace Boxes.Integration.Contexts.Tenancy
         private readonly IIoCFactory<TBuilder, TContainer> _ioCFactory;
         private readonly IProcessOrder _processOrder;
         private readonly ITenantContainerSetup<TBuilder> _tenantContainerSetup;
+        private readonly ITrustManager _trustManager;
 
         /// <summary>
         /// the main process line, add tasks to this, and they will be executed
@@ -37,12 +39,15 @@ namespace Boxes.Integration.Contexts.Tenancy
             PackageRegistry packageRegistry,  
             IIoCFactory<TBuilder, TContainer> ioCFactory, 
             IProcessOrder processOrder,
-            ITenantContainerSetup<TBuilder> tenantContainerSetup)
+            ITenantContainerSetup<TBuilder> tenantContainerSetup,
+            ITrustManager trustManager
+            )
         {
             _packageRegistry = packageRegistry;
             _ioCFactory = ioCFactory;
             _processOrder = processOrder;
             _tenantContainerSetup = tenantContainerSetup;
+            _trustManager = trustManager;
         }
 
         public void LoadPackages(Tenant tenant, IEnumerable<string> packagesToEnable)
@@ -55,6 +60,8 @@ namespace Boxes.Integration.Contexts.Tenancy
 
             tenant.Container.TryDispose();
             var builder = _ioCFactory.CreateBuilder();
+
+            //TODO: check if there are any missing packages, which also need to be enabled
 
             var loadablePackages = 
                 _packageRegistry.Packages
@@ -73,11 +80,18 @@ namespace Boxes.Integration.Contexts.Tenancy
                                                                   _tenantContainerSetup.DefaultTypeRegistrationFilter;
 
                             var context = new ProcessPackageContext(x, typesFilter.FilterTypes(x).ToArray());
+
+                            //TODO: check to see if the context is trusted
+
                             return context;
                         }).ToList(); //save the result, as we may need multiple iterations
 
             //we need to register all the types with the tenants IoC first
-            IEnumerable<RegistrationContext<TBuilder>> registrationContexts = processContexts.SelectMany(x => x.DependencyTypes).Select(x => new RegistrationContext<TBuilder>(x, builder));
+            IEnumerable<RegistrationContext<TBuilder>> registrationContexts = 
+                processContexts
+                .SelectMany(x => x.DependencyTypes)
+                .Select(x => new RegistrationContext<TBuilder>(x, builder));
+            
             _iocPipeline.UpdateTasksAsRequired(_tenantContainerSetup.Registrations);
             _iocPipeline.Execute(registrationContexts).Force();
 
@@ -87,7 +101,7 @@ namespace Boxes.Integration.Contexts.Tenancy
             tenant.Container = container;
 
             //any pre-processing, hopefully there is none! as it is not recommended
-            if (_setup.PreProcesTasks.Count > 0)
+            if (_preProcesTasks.Count > 0)
             {
                 _preProcessPipeline.UpdateTasksAsRequired(_setup.PreProcesTasks);
                 _preProcessPipeline.Execute(processContexts).Force();
@@ -107,8 +121,4 @@ namespace Boxes.Integration.Contexts.Tenancy
             LoadPackages(executionContext.CurrentTenant, packagesToEnable);
         }
     }
-
-
-
-
 }

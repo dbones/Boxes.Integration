@@ -43,14 +43,18 @@ namespace Boxes.Integration.Tasks
             
             //get an instance of this type
             var packageSetup = (IPackageSetup)_dependencyResolver.Resolve(packageSetupType);
-            
-            if(packageSetup.HasAlreadyBeenSetup)
-            {
-                return;
-            }
 
-            packageSetup.Setup(_dependencyResolver);
-            _dependencyResolver.Release(packageSetup);
+            try
+            {
+                if (!packageSetup.HasAlreadyBeenSetup)
+                {
+                    packageSetup.Setup();
+                }
+            }
+            finally
+            {
+                _dependencyResolver.Release(packageSetup);    
+            }
         }
     }
 

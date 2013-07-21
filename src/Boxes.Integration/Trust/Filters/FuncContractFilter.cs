@@ -7,16 +7,16 @@ namespace Boxes.Integration.Trust.Filters
     /// apply the trust of a type given its package context
     /// </summary>
     /// <typeparam name="TContract"></typeparam>
-    public class FuncPackageTypeContractFilter<TContract> : PackageTypeContractFilter<TContract>
+    public class FuncContractFilter<TContract> : ContractFilter<TContract>
     {
-        private readonly Func<PackageTrustContext, bool> _trust;
+        private readonly Func<TypeFromPackageTrustContext, bool> _trust;
 
-        public FuncPackageTypeContractFilter(Func<PackageTrustContext, bool> trust)
+        public FuncContractFilter(Func<TypeFromPackageTrustContext, bool> trust)
         {
             _trust = trust;
         }
 
-        protected override bool IsTrustedContext(PackageTrustContext trustContext)
+        protected override bool IsTrustedContext(TypeFromPackageTrustContext trustContext)
         {
             return _trust(trustContext);
         }

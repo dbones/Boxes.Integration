@@ -14,7 +14,6 @@
 namespace Boxes.Integration
 {
     using System;
-    using Context;
     using Contexts;
     using Discovering;
     using Loading;
@@ -24,6 +23,9 @@ namespace Boxes.Integration
     /// <summary>
     /// takes Boxes and extends it to provide lifestyle management with Dependency Injection along with the (isolated) module loading
     /// </summary>
+    /// <remarks>
+    /// the generic type is require to help the extension methods, do not get rid of it
+    /// </remarks>
     public interface IBoxesWrapper<TBuilder> : IDisposable
     {
         /// <summary>

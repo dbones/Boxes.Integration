@@ -6,9 +6,9 @@ namespace Boxes.Integration.Trust.Filters
     /// filter a contract and include its package as context, inherit this to provide the IsTrustedContext method
     /// </summary>
     /// <typeparam name="TContract">contract</typeparam>
-    public abstract class PackageTypeContractFilter<TContract> : TrustFilterBase<PackageTrustContext>
+    public abstract class ContractFilter<TContract> : TrustFilterBase<TypeFromPackageTrustContext>
     {
-        protected override bool CanHandleContext(PackageTrustContext context)
+        protected override bool CanHandleContext(TypeFromPackageTrustContext context)
         {
             return context.Contract.Is<TContract>();
         }

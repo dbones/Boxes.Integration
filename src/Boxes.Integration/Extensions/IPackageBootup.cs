@@ -24,7 +24,6 @@ namespace Boxes.Integration.Extensions
         /// <summary>
         /// initialize the package
         /// </summary>
-        /// <param name="dependencyResolver"></param>
-        void Load(Tenant tenant, IDependencyResolver dependencyResolver);
+        void Load();
     }
 }

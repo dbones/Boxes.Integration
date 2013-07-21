@@ -22,7 +22,7 @@ namespace Boxes.Integration.Setup
     /// <summary>
     /// the setup for this area of the application
     /// </summary>
-    public interface IContainerSetup : IBoxesExtension
+    public interface IContainerSetup : IBoxesExtensionWithSetup
     {
         /// <summary>
         /// the default filter to find exported classes with

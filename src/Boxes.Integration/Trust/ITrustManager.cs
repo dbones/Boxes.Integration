@@ -13,8 +13,6 @@ namespace Boxes.Integration.Trust
     /// </remarks>
     public interface ITrustManager
     {
-        //TODO: should the IsTrusted Method throw an exception instead?
-
         /// <summary>
         /// this will detail if a class/dll etc is trusted
         /// </summary>

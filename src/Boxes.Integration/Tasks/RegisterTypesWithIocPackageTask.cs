@@ -18,6 +18,7 @@ namespace Boxes.Integration.Tasks
     using Boxes.Tasks;
     using Setup;
 
+    [Obsolete("REMOVE ME", true)]
     internal class RegisterTypesWithIocPackageTask<TBuilder> : IBoxesTask<ProcessPackageContext>
     {
         private readonly IContainerSetup<TBuilder> _containerSetup;
@@ -49,7 +50,8 @@ namespace Boxes.Integration.Tasks
 
         public void Execute(ProcessPackageContext item)
         {
-            _pipilineExecutor.Execute(item.DependencyTypes).Force();
+            //var typesToRegister = item.DependencyTypes.Select(x => new RegistrationContext<TBuilder>(x, _containerSetup));
+            //_pipilineExecutor.Execute(typesToRegister).Force();
         }
     }
 }

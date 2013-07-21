@@ -3,11 +3,11 @@ namespace Boxes.Integration.Trust.Contexts
     using System;
 
     /// <summary>
-    /// 
+    /// check to see if a type from a package is ok (Boxes Extension)
     /// </summary>
-    public sealed class PackageTrustContext : TrustContext
+    public sealed class TypeFromPackageTrustContext : TrustContext
     {
-        public PackageTrustContext(Type contract, Type service, Package package)
+        public TypeFromPackageTrustContext(Type contract, Type service, Package package)
         {
             Contract = contract;
             Service = service;
@@ -20,7 +20,7 @@ namespace Boxes.Integration.Trust.Contexts
         public Type Contract { get; private set; }
 
         /// <summary>
-        /// the service which will fulfill the contract
+        /// the service which will fulfil the contract
         /// </summary>
         public Type Service { get; private set; }
 

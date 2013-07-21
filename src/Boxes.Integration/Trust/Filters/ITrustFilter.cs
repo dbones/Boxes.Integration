@@ -1,5 +1,6 @@
 namespace Boxes.Integration.Trust.Filters
 {
+    using System;
     using Contexts;
 
     /// <summary>
@@ -7,6 +8,11 @@ namespace Boxes.Integration.Trust.Filters
     /// </summary>
     public interface ITrustFilter
     {
+        /// <summary>
+        /// returns the main trust context this filter supports (this is to try and make the process a little faster)
+        /// </summary>
+        Type HandlesTrustContextType { get; } 
+
         /// <summary>
         /// to see if this filter can be applied to the current trust context
         /// </summary>

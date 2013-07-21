@@ -1,5 +1,6 @@
 namespace Boxes.Integration.Trust.Filters
 {
+    using System;
     using Contexts;
 
     /// <summary>
@@ -9,9 +10,11 @@ namespace Boxes.Integration.Trust.Filters
     public abstract class TrustFilterBase<TContext> : ITrustFilter 
         where TContext : TrustContext
     {
+        public Type HandlesTrustContextType { get { return typeof (TContext); } }
+
         public virtual bool CanHandle(TrustContext trustContext)
         {
-            if(!trustContext.GetType().Is<TContext>())
+            if(!(trustContext is TContext))
             {
                 return false;
             }

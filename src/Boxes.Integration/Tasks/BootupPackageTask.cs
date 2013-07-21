@@ -43,9 +43,14 @@ namespace Boxes.Integration.Tasks
 
             //get an instance of this type
             var packageBootup = (IPackageBootup)_dependencyResolver.Resolve(packageBootupType);
-
-            packageBootup.Load(_dependencyResolver);
-            _dependencyResolver.Release(packageBootup);
+            try
+            {
+                packageBootup.Load();
+            }
+            finally
+            {
+                _dependencyResolver.Release(packageBootup);    
+            }
         }
     }
 }
