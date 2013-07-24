@@ -21,6 +21,7 @@ namespace Boxes.Integration.Tasks
     using InternalIoc;
     using Trust;
     using Trust.Contexts;
+    using Trust.Contexts.BoxesExtensions;
 
     internal class ExtendBoxesTask : IBoxesTask<Package>
     {

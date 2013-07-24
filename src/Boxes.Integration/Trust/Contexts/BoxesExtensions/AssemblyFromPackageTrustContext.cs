@@ -1,4 +1,4 @@
-namespace Boxes.Integration.Trust.Contexts
+namespace Boxes.Integration.Trust.Contexts.BoxesExtensions
 {
     using System.Reflection;
 

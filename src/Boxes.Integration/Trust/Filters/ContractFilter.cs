@@ -1,6 +1,7 @@
 namespace Boxes.Integration.Trust.Filters
 {
     using Contexts;
+    using Contexts.BoxesExtensions;
 
     /// <summary>
     /// filter a contract and include its package as context, inherit this to provide the IsTrustedContext method

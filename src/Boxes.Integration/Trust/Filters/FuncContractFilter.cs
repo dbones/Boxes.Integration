@@ -2,6 +2,7 @@ namespace Boxes.Integration.Trust.Filters
 {
     using System;
     using Contexts;
+    using Contexts.BoxesExtensions;
 
     /// <summary>
     /// apply the trust of a type given its package context

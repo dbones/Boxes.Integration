@@ -22,16 +22,6 @@ namespace Boxes.Integration.Contexts.Tenancy
         private readonly ITenantContainerSetup<TBuilder> _tenantContainerSetup;
         private readonly ITrustManager _trustManager;
 
-        /// <summary>
-        /// the main process line, add tasks to this, and they will be executed
-        /// in the order defined by <see cref="IProcessOrder"/>
-        /// </summary>
-        private readonly PipelineExecutorWrapper<ProcessPackageContext> _processPipeline = new PipelineExecutorWrapper<ProcessPackageContext>();
-        /// <summary>
-        /// this is the pre-process pipeline, however its not recommended to use this one.
-        /// </summary>
-        private readonly PipelineExecutorWrapper<ProcessPackageContext> _preProcessPipeline = new PipelineExecutorWrapper<ProcessPackageContext>();
-
         private readonly PipelineExecutorWrapper<RegistrationContext<TBuilder>> _iocPipeline = new PipelineExecutorWrapper<RegistrationContext<TBuilder>>();
 
 
@@ -100,20 +90,7 @@ namespace Boxes.Integration.Contexts.Tenancy
             var container = _ioCFactory.CreateContainer(builder);
             tenant.Container = container;
 
-            //any pre-processing, hopefully there is none! as it is not recommended
-            if (_preProcesTasks.Count > 0)
-            {
-                _preProcessPipeline.UpdateTasksAsRequired(_setup.PreProcesTasks);
-                _preProcessPipeline.Execute(processContexts).Force();
-            }
-
-            //finally run the Setup and boot up of all the newly found packages 
-            //(tying to process them together, package by package)
-            if (_setup.ProcesTasks.Count > 0)
-            {
-                _processPipeline.UpdateTasksAsRequired(_setup.ProcesTasks);
-                _processPipeline.Execute(processContexts).Force();
-            }
+            
         }
 
         public void LoadPackages(IExecutionContext executionContext, IEnumerable<string> packagesToEnable)

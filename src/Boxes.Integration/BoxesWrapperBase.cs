@@ -20,6 +20,7 @@ namespace Boxes.Integration
     using InternalIoc;
     using Loading;
     using Tasks;
+    using Trust;
 
     public abstract class BoxesWrapperBase<TBuilder, TContainer> : IBoxesWrapper<TBuilder>
     {
