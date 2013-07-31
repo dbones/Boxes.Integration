@@ -19,12 +19,12 @@ namespace Boxes.Integration
     using Factories;
     using InternalIoc;
     using Loading;
+    using Process;
     using Tasks;
     using Trust;
 
     public abstract class BoxesWrapperBase<TBuilder, TContainer> : IBoxesWrapper<TBuilder>
     {
-
         //TODO: look at disabling registrations http://ayende.com/blog/2792/introducing-monorail-hotswap 
         //issue is around the containers, a subset allow to deletions of registrations
         //an other way is to restart the app and only register the required packages with the IoC
@@ -39,6 +39,10 @@ namespace Boxes.Integration
         //use child containers to handle tenants. implement a IProcess (consider PLinq) to register
         //the correct packages with the correct child container.
 
+        //TODO: consider how to admin an application
+
+        //TODO: events
+
         private IPackageScanner _defaultPackageScanner;
         private ILoader _loader;
         private readonly TaskRunner<Package> _extensionRunner;
@@ -51,7 +55,6 @@ namespace Boxes.Integration
             PackageRegistry = new PackageRegistry();
             _extensionRunner = new TaskRunner<Package>(new ExtendBoxesTask(_internalContainer));
             _loaderFactory = new LoaderFactory();
-            
         }
 
         public PackageRegistry PackageRegistry { get; private set; }
@@ -77,16 +80,17 @@ namespace Boxes.Integration
             var loader = new LoaderProxy(_loader);
             PackageRegistry.LoadPackages(loader);
 
+            var processOrder = _internalContainer.Resolve<IProcessOrder>();
+            var arrangedPackages = processOrder.Arrange(loader.Packages);
+
             //process extensions first (completely, before running the rest of the package or process)
-            _extensionRunner.Execute(loader.Packages).Force();
+            _extensionRunner.Execute(arrangedPackages).Force();
         }
 
         public T GetService<T>()
         {
             return _internalContainer.Resolve<T>();
         }
-
-
 
 
         public virtual void Dispose()

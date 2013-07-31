@@ -14,7 +14,6 @@
 namespace Boxes.Integration
 {
     using System;
-    using Contexts;
     using Discovering;
     using Loading;
     using Setup;
@@ -83,14 +82,6 @@ namespace Boxes.Integration
         public static IApplicationContainerSetup<TBuilder> GlobalRegistrations<TBuilder>(this IBoxesWrapper<TBuilder> boxes)
         {
             return boxes.GetService<IApplicationContainerSetup<TBuilder>>();
-        }
-
-        /// <summary>
-        /// the current execution context, get the current Tenant
-        /// </summary>
-        public static IExecutionContext Context<TBuilder>(this IBoxesWrapper<TBuilder> boxes)
-        {
-            return boxes.GetService<IExecutionContext>();
         }
 
         /// <summary>
