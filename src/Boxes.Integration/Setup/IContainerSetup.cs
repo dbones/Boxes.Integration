@@ -54,12 +54,6 @@ namespace Boxes.Integration.Setup
         /// <param name="packageName">name of the package</param>
         /// <returns>null if there is not filter</returns>
         ITypeRegistrationFilter GetTypeRegistrationFilter(string packageName);
-
-
-        //void RegisterPreProcessTask(IBoxesTask<ProcessPackageContext> task);
-
-
-        //void RegisterProcessTask(IBoxesTask<ProcessPackageContext> task);
     }
 
 
@@ -72,12 +66,7 @@ namespace Boxes.Integration.Setup
         /// all the registration to run the types through
         /// </summary>
         IEnumerable<IBoxesTask<RegistrationContext<TBuilder>>> Registrations { get; }
-
-        //IEnumerable<IBoxesTask<ProcessPackageContext>> PreProcessTasks { get; }
-
-        //IEnumerable<IBoxesTask<ProcessPackageContext>> ProcessTasks { get; } 
-
-
-        
     }
+
+    
 }

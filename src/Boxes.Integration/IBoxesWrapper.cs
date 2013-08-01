@@ -69,22 +69,6 @@ namespace Boxes.Integration
     public static class BoxesWrapperExtensions
     {
         /// <summary>
-        /// A mechanism to handle type registration with the Tenant(s) IoC container.
-        /// </summary>
-        public static ITenantContainerSetup<TBuilder> Registrations<TBuilder>(this IBoxesWrapper<TBuilder> boxes)
-        {
-            return boxes.GetService<ITenantContainerSetup<TBuilder>>();
-        }
-
-        /// <summary>
-        /// A mechanism to handle type registration with the underlying Global/Parent IoC container.
-        /// </summary>
-        public static IApplicationContainerSetup<TBuilder> GlobalRegistrations<TBuilder>(this IBoxesWrapper<TBuilder> boxes)
-        {
-            return boxes.GetService<IApplicationContainerSetup<TBuilder>>();
-        }
-
-        /// <summary>
         /// the trust manager being used by boxes.
         /// </summary>
         public static ITrustManager TrustManager<TBuilder>(this IBoxesWrapper<TBuilder> boxes)

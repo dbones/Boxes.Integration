@@ -14,7 +14,7 @@
 namespace Boxes.Integration.Factories
 {
     using System;
-    using Boxes.Loading;
+    using Loading;
 
     /// <summary>
     /// creates a Loader, based on a Func which is passed in via the ctor

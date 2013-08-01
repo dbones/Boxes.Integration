@@ -16,7 +16,7 @@ namespace Boxes.Integration.Factories
     /// <summary>
     /// create instances of containers as required
     /// </summary>
-    public interface IIoCFactory<TBuilder, TContainer>
+    public interface IIocFactory<TBuilder, TContainer>
     {
 
         /// <summary>

@@ -13,7 +13,6 @@
 // limitations under the License.
 namespace Boxes.Integration
 {
-    using System;
     using Boxes.Tasks;
     using Discovering;
     using Factories;
@@ -23,25 +22,33 @@ namespace Boxes.Integration
     using Tasks;
     using Trust;
 
+    /// <summary>
+    /// this wrapper of boxes.core, this will integrate the features of boxes with an IoC container
+    /// </summary>
+    /// <typeparam name="TBuilder">the type used to build registrations</typeparam>
+    /// <typeparam name="TContainer">the type of the container, this will be used to resolve the instances</typeparam>
+    /// <remarks>
+    /// do not remove the TContainer this is used with the extension methods and with the other classes in the system</remarks>
     public abstract class BoxesWrapperBase<TBuilder, TContainer> : IBoxesWrapper<TBuilder>
     {
-        //TODO: look at disabling registrations http://ayende.com/blog/2792/introducing-monorail-hotswap 
+        //TODO: look at disabling registrations (controllable in a module) 
+        //http://ayende.com/blog/2792/introducing-monorail-hotswap 
         //issue is around the containers, a subset allow to deletions of registrations
         //an other way is to restart the app and only register the required packages with the IoC
         //the second way can be supported by coding a module
         //favored way, use of child container, will need to re-initialise the container (delete, create a new one)
 
-        //TODO: migrations
+        //TODO: migrations (possible in a module)
         //updates of a module will require a restart, currently the Loaders do not support 
         //app domains. they do offer a level of isolation
 
-        //TODO: Multi-tenancy
+        //TODO: Multi-tenancy (possible in a module)
         //use child containers to handle tenants. implement a IProcess (consider PLinq) to register
         //the correct packages with the correct child container.
 
-        //TODO: consider how to admin an application
+        //TODO: consider how to admin an application (need feedback)
 
-        //TODO: events
+        //TODO: events (possible in a module)
 
         private IPackageScanner _defaultPackageScanner;
         private ILoader _loader;
@@ -55,6 +62,16 @@ namespace Boxes.Integration
             PackageRegistry = new PackageRegistry();
             _extensionRunner = new TaskRunner<Package>(new ExtendBoxesTask(_internalContainer));
             _loaderFactory = new LoaderFactory();
+
+            //setup the internal IoC
+            _internalContainer.Add<IProcessOrder, TopologicalProcessOrder>();
+            _internalContainer.Add(typeof(IIocSetup<>), typeof(IocSetup<>));
+            _internalContainer.Add<ITrustManager, TrustManager>();
+
+            _internalContainer.Add<LoaderFactory, LoaderFactory>();
+            _internalContainer.setInstance(typeof(LoaderFactory), _loaderFactory);
+
+            Initialize(_internalContainer);
         }
 
         public PackageRegistry PackageRegistry { get; private set; }
@@ -97,29 +114,11 @@ namespace Boxes.Integration
         {
             _internalContainer.Dispose();
         }
-        
-    }
 
-
-    public class App
-    {
-        public void Main()
-        {
-            //IBoxesWrapper<> boxes = null;
-            ////boxes.BoxesIntegrationSetup
-            ////how do we want to configure?
-
-            //boxes.Setup<IsolatedLoader>(new PackageScanner("folder"));
-            //boxes.DiscoverPackages();
-            //boxes.LoadPackages();
-
-
-
-            //boxes.EnablePackages("", "", "", "", ""); //auto detect the tenant
-            //boxes.DependencyResolver.Resolve<Object>();
-        }
-
+        /// <summary>
+        /// setup boxes integration with the IoC implementation (register types with the internal IoC)
+        /// </summary>
+        protected abstract void Initialize(IInternalContainer internalContainer);
 
     }
-
 }

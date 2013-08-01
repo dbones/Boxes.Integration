@@ -13,9 +13,21 @@
 // limitations under the License.
 namespace Boxes.Integration.Setup
 {
+    //TODO:move into the base/default module
+
     /// <summary>
-    /// the global container setup
+    /// the tenants container setup
     /// </summary>
     /// <typeparam name="TBuilder">the ioc builder class</typeparam>
-    public interface IApplicationContainerSetup<TBuilder> : IContainerSetup<TBuilder>{}
+    public interface IDefaultContainerSetup<TBuilder> : IContainerSetup<TBuilder> { }
+
+
+    public class DefaultContainerSetup<TBuilder> : ContainerSetupBase<TBuilder>, IDefaultContainerSetup<TBuilder>
+    {
+        public DefaultContainerSetup(IRegistrationTaskMapper<TBuilder> registrationTaskMapper)
+            : base(registrationTaskMapper)
+        {
+        }
+    }
+
 }

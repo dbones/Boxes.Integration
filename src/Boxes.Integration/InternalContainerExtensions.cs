@@ -18,7 +18,7 @@ namespace Boxes.Integration
     /// <summary>
     /// some extensions for the internal container
     /// </summary>
-    internal static class InternalContainerExtensions
+    public static class InternalContainerExtensions
     {
         public static void Add<TContract, TService>(this IInternalContainer internalContainer) where TService : TContract
         {

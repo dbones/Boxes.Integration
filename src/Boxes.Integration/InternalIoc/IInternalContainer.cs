@@ -18,7 +18,7 @@ namespace Boxes.Integration.InternalIoc
     /// <summary>
     /// A simple internal container, which will manage the services available in Boxes.
     /// </summary>
-    internal interface IInternalContainer : IDisposable
+    public interface IInternalContainer : IDisposable
     {
         void Add(Type contract, Type service);
         

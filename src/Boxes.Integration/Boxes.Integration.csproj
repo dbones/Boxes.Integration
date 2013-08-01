@@ -47,14 +47,14 @@
   <ItemGroup>
     <Compile Include="Extensions\ISetupBoxesExtension.cs" />
     <Compile Include="Extensions\IBoxesExtensionWithSetup.cs" />
+    <Compile Include="Factories\IIocSetup.cs" />
     <Compile Include="InternalIoc\IInternalContainer.cs" />
     <Compile Include="InternalIoc\Registration.cs" />
     <Compile Include="InternalContainerExtensions.cs" />
     <Compile Include="InternalIoc\InternalInternalContainer.cs" />
     <Compile Include="Setup\Filters\DefaultTypeRegistrationFilter.cs" />
-    <Compile Include="Setup\IApplicationContainerSetup.cs" />
     <Compile Include="Setup\IRegistrationTaskMapper.cs" />
-    <Compile Include="Setup\ITenantContainerSetup.cs" />
+    <Compile Include="Setup\DefaultContainerSetup.cs" />
     <Compile Include="Exceptions\ServiceTypeDoesNotMatchInstanceException.cs" />
     <Compile Include="Exceptions\FailedTrustException.cs" />
     <Compile Include="Trust\Contexts\BoxesExtensions\AssemblyFromPackageTrustContext.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="Factories\FuncCreateLoader.cs" />
     <Compile Include="Factories\ICreateLoader.cs" />
     <Compile Include="Factories\IDependencyResolverFactory.cs" />
-    <Compile Include="Factories\IIoCFactory.cs" />
+    <Compile Include="Factories\IIocFactory.cs" />
     <Compile Include="Factories\LoaderFactory.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Process\TopologicalProcessOrder.cs" />

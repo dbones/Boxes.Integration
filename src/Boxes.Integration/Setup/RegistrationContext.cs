@@ -15,8 +15,7 @@ namespace Boxes.Integration.Setup
 {
     using System;
 
-    //TODO: keep an eye on this class, look at some profiling
-
+    //TODO: keep an eye on the use of this class, look at some profiling
 
     /// <summary>
     /// the context for the registration

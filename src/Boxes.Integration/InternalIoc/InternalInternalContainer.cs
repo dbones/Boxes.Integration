@@ -72,7 +72,7 @@ namespace Boxes.Integration.InternalIoc
                 {
                     //no support for list or lazy, this is a simple internalContainer
                     Type[] genericArguments = contract.GetGenericArguments();
-                    getServiceType = r => r.Service.MakeGenericType(genericArguments);
+                    getServiceType = r => r.Service.IsGenericType ? r.Service.MakeGenericType(genericArguments) : r.Service;
                     contract = contract.GetGenericTypeDefinition();
                 }
                 else
