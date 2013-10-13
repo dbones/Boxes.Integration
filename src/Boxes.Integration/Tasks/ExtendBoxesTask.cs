@@ -63,11 +63,25 @@ namespace Boxes.Integration.Tasks
 
             var types = assemblies.SelectMany(x => x.GetExportedTypes()).ToArray();
 
-            foreach (var service in types.Where(x => typeof(IBoxesExtension).IsAssignableFrom(x)))
+            foreach (var service in types.Where(x => !x.IsInterface && !x.IsAbstract  && typeof(IBoxesExtension).IsAssignableFrom(x)))
             {
-                var contract = service.FirstInterface();
+                var registeredService = service;
+                var contract = registeredService.FirstInterface();
+                
+                //try and get the generic types
+                if (contract.IsGenericType)
+                {
+                    contract = contract.GetGenericTypeDefinition();
+                }
+
+                if (registeredService.IsGenericType)
+                {
+                    registeredService = service.GetGenericTypeDefinition();
+                }
+
+                
                 _trustManager.IsTrusted(new TypeFromPackageTrustContext(contract, service, item));
-                _container.Add(contract, service);
+                _container.Add(contract, registeredService);
             }
 
 
