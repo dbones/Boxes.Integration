@@ -17,12 +17,12 @@ namespace Boxes.Integration.Setup
         /// <summary>
         /// create a new registration pattern
         /// </summary>
-        public Register Register { get { return new Register(); } }
+        public Register Component { get { return new Register(); } }
 
         /// <summary>
         /// create a new interception (AOP) pattern
         /// </summary>
-        public IRegisterInterception RegisterInterception { get { return new RegisterInterception(); } }
+        public IRegisterInterception Intercept { get { return new RegisterInterception(); } }
 
         public abstract void Configure(IContainerSetup extension);
     }

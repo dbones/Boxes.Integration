@@ -90,5 +90,13 @@ namespace Boxes.Integration
             }
             return result;
         }
+
+
+        public static bool HasAttribute<T>(this Type type) where T : Attribute
+        {
+            return type.GetCustomAttributes(typeof(T), true).Any();
+        }
     }
+
+
 }
