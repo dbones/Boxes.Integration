@@ -87,10 +87,6 @@ namespace Boxes.Integration.Setup.Registrations
             return this;
         }
 
-        public Registration Configure<TConfiguration>(Action<TConfiguration> cfg)
-        {
-            RegistrationMeta.Configurations.Add(o => cfg((TConfiguration)o));
-            return this;
-        }
+        
     }
 }

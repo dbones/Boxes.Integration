@@ -14,6 +14,7 @@
 namespace Boxes.Integration.Setup
 {
     using System.Collections.Generic;
+    using System.Security.Policy;
     using Boxes.Tasks;
     using Extensions;
     using Filters;
@@ -74,6 +75,4 @@ namespace Boxes.Integration.Setup
         /// </summary>
         IEnumerable<IBoxesTask<RegistrationContext<TBuilder>>> Registrations { get; }
     }
-
-    
 }
