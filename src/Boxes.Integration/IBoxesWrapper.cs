@@ -17,7 +17,6 @@ namespace Boxes.Integration
     using Discovering;
     using Loading;
     using Setup;
-    using Trust;
 
     /// <summary>
     /// takes Boxes and extends it to provide lifestyle management with Dependency Injection along with the (isolated) module loading
@@ -61,22 +60,5 @@ namespace Boxes.Integration
         /// <typeparam name="T">The service to return</typeparam>
         /// <returns>null if it it does not exist</returns>
         T GetService<T>();
-    }
-
-    /// <summary>
-    /// extensions for the boxes wrapper
-    /// </summary>
-    public static class BoxesWrapperExtensions
-    {
-        /// <summary>
-        /// the trust manager being used by boxes.
-        /// </summary>
-        public static ITrustManager TrustManager<TBuilder, TContainer>(this IBoxesWrapper<TBuilder, TContainer> boxes)
-        {
-            return boxes.GetService<ITrustManager>();
-        }
-
-
-
     }
 }

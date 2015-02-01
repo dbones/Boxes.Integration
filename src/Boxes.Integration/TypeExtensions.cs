@@ -91,23 +91,4 @@ namespace Boxes.Integration
             return result;
         }
     }
-
-    /// <summary>
-    /// couple of string extensions
-    /// </summary>
-    public static class StringExtension
-    {
-
-        /// <summary>
-        /// format the string, "{0} world".FormatWith("Hello");
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public static string FormatWith(this string str, params object[] args)
-        {
-            return string.Format(str, args);
-        }
-    }
-
 }
