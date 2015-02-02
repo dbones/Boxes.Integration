@@ -54,5 +54,6 @@ namespace Boxes.Integration
         /// </summary>
         /// <param name="obj">the object to release</param>
         void Release(object obj);
+
     }
 }

@@ -1,6 +1,5 @@
 namespace Boxes.Integration
 {
-    using System.Collections;
     using Boxes.Tasks;
     using Discovering;
     using Extensions;
@@ -15,7 +14,7 @@ namespace Boxes.Integration
         /// <summary>
         /// the trust manager being used by boxes.
         /// </summary>
-        public static ITrustManager TrustManager<TBuilder, TContainer>(this IBoxesWrapper<TBuilder, TContainer> boxes)
+        public static ITrustManager TrustManager(this IBoxesWrapper boxes)
         {
             return boxes.GetService<ITrustManager>();
         }

@@ -16,15 +16,11 @@ namespace Boxes.Integration
     using System;
     using Discovering;
     using Loading;
-    using Setup;
 
     /// <summary>
     /// takes Boxes and extends it to provide lifestyle management with Dependency Injection along with the (isolated) module loading
     /// </summary>
-    /// <remarks>
-    /// the generic type is require to help the extension methods, do not get rid of it
-    /// </remarks>
-    public interface IBoxesWrapper<TBuilder,TContainer> : IDisposable
+    public interface IBoxesWrapper: IDisposable
     {
         /// <summary>
         /// package registry, this will provide the information of what modules have been loaded
@@ -61,4 +57,12 @@ namespace Boxes.Integration
         /// <returns>null if it it does not exist</returns>
         T GetService<T>();
     }
+
+    /// <summary>
+    /// takes Boxes and extends it to provide lifestyle management with Dependency Injection along with the (isolated) module loading
+    /// </summary>
+    /// <remarks>
+    /// the generic type is required to help the extension methods, do not get rid of it
+    /// </remarks>
+    public interface IBoxesWrapper<TBuilder, TContainer> : IBoxesWrapper { }
 }
