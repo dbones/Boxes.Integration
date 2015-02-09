@@ -52,6 +52,7 @@
     <Compile Include="BoxesWrapperExtensions.cs" />
     <Compile Include="Extensions\ISetupBoxesExtension.cs" />
     <Compile Include="Extensions\IBoxesExtensionWithSetup.cs" />
+    <Compile Include="Extensions\IStartableBoxesExtension.cs" />
     <Compile Include="Factories\IIocSetup.cs" />
     <Compile Include="InternalIoc\IInternalContainer.cs" />
     <Compile Include="InternalIoc\Registration.cs" />

@@ -54,6 +54,7 @@ namespace Boxes.Integration
         private IPackageScanner _defaultPackageScanner;
         private ILoader _loader;
         private readonly TaskRunner<Package> _extensionRunner;
+        private readonly ExtendBoxesTask _extendBoxesTask;
         private readonly LoaderFactory _loaderFactory;
         private readonly IInternalContainer _internalContainer;
 
@@ -82,7 +83,8 @@ namespace Boxes.Integration
 
             Initialize(_internalContainer);
 
-            _extensionRunner = new TaskRunner<Package>(new ExtendBoxesTask(_internalContainer));
+            _extendBoxesTask = new ExtendBoxesTask(_internalContainer);
+            _extensionRunner = new TaskRunner<Package>(_extendBoxesTask);
             
         }
 
@@ -109,11 +111,18 @@ namespace Boxes.Integration
             var loader = new LoaderProxy(_loader);
             PackageRegistry.LoadPackages(loader);
 
-            var processOrder = _internalContainer.Resolve<IProcessOrder>();
-            var arrangedPackages = processOrder.Arrange(loader.Packages);
+            //this way does not require the pakages to be ordered.
+            //it may allow for packages to be adhocly added to, not reconmended
+            _extensionRunner.Execute(loader.Packages).Force();
+            _extendBoxesTask.ExecutePostTask();
+            
+            //trying witout the process order
+            //var processOrder = _internalContainer.Resolve<IProcessOrder>();
+            //var arrangedPackages = processOrder.Arrange(loader.Packages);
 
             //process extensions first (completely, before running the rest of the package or process)
-            _extensionRunner.Execute(arrangedPackages).Force();
+            //_extensionRunner.Execute(arrangedPackages).Force();
+
         }
 
         public T GetService<T>()

@@ -14,13 +14,20 @@
 namespace Boxes.Integration.Trust.Contexts.BoxesExtensions
 {
     using System;
+    using Extensions;
 
     /// <summary>
-    /// check to see if a package is allowed to configure a component (Boxes Extension)
+    /// check to see if a class (inside a package) is allowed to configure a component (Boxes Extension)
     /// </summary>
     public sealed class SetupFromPackageTrustContext : TrustContext
     {
         
+        /// <summary>
+        /// create a setup <see cref="ISetupBoxesExtension{TConfigure}"/> trust context
+        /// </summary>
+        /// <param name="contract">the contact which will be setup</param>
+        /// <param name="setup">the type which will setup the traget component</param>
+        /// <param name="package">the package which the setup is located</param>
         public SetupFromPackageTrustContext(Type contract, Type setup, Package package)
         {
             Contract = contract;
