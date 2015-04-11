@@ -8,9 +8,7 @@ gulp.task('assemblyInfo', function() {
         .pipe(assemblyInfo({
             version: config.buildVersion,
             fileVersion: config.buildVersion,
-            copyright: function(value) {
-                return value + '-' + new Date().getFullYear();
-            }
+            copyright: config.command.assembly.copyright
         }))
         .pipe(gulp.dest('.'));
 });

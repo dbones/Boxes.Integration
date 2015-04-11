@@ -48,8 +48,8 @@ gulp.task('package', ['get-nuget', 'nuegt-set-dependency-version'], function(don
                         basePath: path.resolve('./')
                     };
 
-                    if(args.buildVersion) {
-                        arg.version = args.buildVersion;
+                    if(config.buildVersion) {
+                        arg.version = config.buildVersion;
                     }
 
                     nuget.pack(arg)
