@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\dev\github\dave\Boxes.Integration\src\Boxes.Integration.Test\bin\Debug\Boxes.Integration.Test.dll" total="4" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2015-04-11" time="20:02:46">
+  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8009" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\dev\github\dave\Boxes.Integration" machine-name="SLIM" user="admin" user-domain="slim" />
+  <culture-info current-culture="en-GB" current-uiculture="en-GB" />
+  <test-suite type="Test Project" name="" executed="True" result="Success" success="True" time="4.429" asserts="0">
+    <results>
+      <test-suite type="Assembly" name="C:\dev\github\dave\Boxes.Integration\src\Boxes.Integration.Test\bin\Debug\Boxes.Integration.Test.dll" executed="True" result="Success" success="True" time="1.828" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Boxes" executed="True" result="Success" success="True" time="1.809" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Integration" executed="True" result="Success" success="True" time="1.808" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="1.808" asserts="0">
+                    <results>
+                      <test-suite type="TestFixture" name="RegisterBaseTests" executed="True" result="Success" success="True" time="0.092" asserts="0">
+                        <results>
+                          <test-case name="Boxes.Integration.Test.RegisterBaseTests.Simple_setup" executed="True" result="Success" success="True" time="0.077" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="TopologicalProcessOrderTests" executed="True" result="Success" success="True" time="1.702" asserts="0">
+                        <results>
+                          <test-case name="Boxes.Integration.Test.TopologicalProcessOrderTests.Order_dependencies" executed="True" result="Success" success="True" time="1.701" asserts="0" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="Assembly" name="C:\dev\github\dave\Boxes.Integration\src\Boxes.Integration.Test\bin\Release\Boxes.Integration.Test.dll" executed="True" result="Success" success="True" time="1.759" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Boxes" executed="True" result="Success" success="True" time="1.736" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Integration" executed="True" result="Success" success="True" time="1.736" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="1.735" asserts="0">
+                    <results>
+                      <test-suite type="TestFixture" name="RegisterBaseTests" executed="True" result="Success" success="True" time="0.081" asserts="0">
+                        <results>
+                          <test-case name="Boxes.Integration.Test.RegisterBaseTests.Simple_setup" executed="True" result="Success" success="True" time="0.068" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="TopologicalProcessOrderTests" executed="True" result="Success" success="True" time="1.649" asserts="0">
+                        <results>
+                          <test-case name="Boxes.Integration.Test.TopologicalProcessOrderTests.Order_dependencies" executed="True" result="Success" success="True" time="1.648" asserts="0" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
