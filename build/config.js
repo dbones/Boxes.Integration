@@ -5,7 +5,7 @@ var config = {
 
     outputDir : path.resolve('./output'),
     toolsDir : path.resolve('./tools'),
-    buildVersion : args.buildNumber ? '0.1.' + args.buildNumber  : undefined,
+    buildVersion : args.buildNumber ? '0.4.' + args.buildNumber  : undefined,
     company: 'dbones.co.uk'
 
 
@@ -14,13 +14,13 @@ var config = {
 //command config
 config.command = {
     assembly: {
-        copyright: 'Copyright © '+ config.company +' 2013-' + new Date().getFullYear()
+        copyright: 'Copyright '+ config.company +' 2013-' + new Date().getFullYear()
     },
     test:{
         dllName: '*.Test.dll'
     },
     package: {
-        dependencyNameOverride: '//x:dependency[starts-with(@x:id, \'Boxes.\')]/@x:version'
+        //dependencyNameOverride: '//x:dependency[starts-with(@x:id, \'Boxes.\')]/@x:version'
         //configFile: null
     }
 }

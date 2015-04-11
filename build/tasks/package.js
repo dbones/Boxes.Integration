@@ -109,24 +109,5 @@ gulp.task('get-nuget',  function(done) {
 
 	request(downloadLocation)
 		.pipe(fs.createWriteStream(runnerFileName))
-		.on('end', function () { done(); })
+		.on('end', function () { done(); });
 });
-
-
-function defer(){
-	
-	var resolve;
-	var reject;
-	var self = this;
-	var promise = new Promise(function(resolve, reject) {  self.resolve = resolve; self.reject = reject; });
-	
-	return {
-		promise: promise,
-		resolve: resolve,
-		reject: reject
-	}
-}
-
-function replaceSlash(str) {
-    return  str.replace(/\//g, '\\');
-}

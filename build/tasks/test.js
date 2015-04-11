@@ -3,7 +3,6 @@ var gulp = require('gulp');
 var request = require('request');
 var fs = require('fs');
 var unzip = require('unzip');
-var gulpif = require('gulp-if');
 var mkdirp = require('mkdirp');
 var config = require('../config');
 
@@ -37,13 +36,13 @@ gulp.task('test', ['get-nunit'], function () {
 			work: outputDir,
 
 			// Label each test in stdOut.
-			labels: true,
+			labels: true
 
 			//// Set internal trace level.
 			//trace: 'Off|Error|Warning|Info|Verbose',
 
 			// Framework version to be used for tests.
-			framework: 'net-4.0'
+			//framework: 'net-4.0'
 		}
 
 	};
@@ -75,15 +74,20 @@ gulp.task('nunit-unzip', ['nunit-download'], function(done) {
 });
 
 
-gulp.task('nunit-download', function() {
+gulp.task('nunit-download', function(done) {
 
 	mkdirp.sync(toolsDir);
 
 	var file = zipFileName;
-	var zipDoesNotExist = !(fs.existsSync(nunitDir));
+	var zipExists = fs.existsSync(nunitDir);
 
-	return gulp.src(file, { read: false })
-		.pipe(gulpif(zipDoesNotExist, request(nunitLocation)))
-		.pipe(gulpif(zipDoesNotExist, fs.createWriteStream(file)));
-		
+	if(zipExists) {
+		done();
+		return;
+	}
+
+	request(nunitLocation)
+		.pipe(fs.createWriteStream(file))
+		.on('end', function () { done(); });
+
 });
